@@ -1,10 +1,11 @@
 import os
 import sys
 from datetime import datetime
-from pathlib import choice
+from pathlib import Path
+from random import choice
 
 import django
-from djando.conf import from django.conf import settings
+from django.conf import settings
 
 DJANGO_BASE_DIR = Path(__file__).parent.parent
 NUMBER_OF_OBJECTS = 1000
@@ -20,6 +21,7 @@ if __name__ == '__main__':
 
     from contact.models import Category, Contact
 
+    # Cuidado, apaga todos dados
     Contact.objects.all().delete()
     Category.objects.all().delete()
 
@@ -39,8 +41,8 @@ if __name__ == '__main__':
         first_name, last_name = profile['name'].split(' ', 1)
         phone = fake.phone_number()
         created_date: datetime = fake.date_this_year()
-        description = random_text = fake.text(max_nb_char=100)
-        category = choice (django_categories)
+        description = fake.text(max_nb_chars=100)
+        category = choice(django_categories)
 
         django_contacts.append(
             Contact(
@@ -55,5 +57,5 @@ if __name__ == '__main__':
         )
 
     if len(django_contacts) > 0:
-        Contact.object.bulk_create(django_contacts)
+        Contact.objects.bulk_create(django_contacts)
         
